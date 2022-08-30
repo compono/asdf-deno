@@ -43,6 +43,7 @@ install_deno() {
     case "$(uname -m)" in
       x86_64) architecture="x86_64" ;;
       arm64) architecture="aarch64" ;;
+      aarch64) architecture="arm64" ;;
       *) fail "Unsupported architecture" ;;
     esac
 
@@ -67,6 +68,10 @@ install_deno() {
   fi
 
   local download_url="https://github.com/denoland/deno/releases/download/v${version}/${archive_file}"
+  if [[ "$platform" == "unknown-linux-gnu" && "$architecture" == "arm64"  ]]; then
+    download_url="https://github.com/LukeChannings/deno-arm64/releases/download/v${version}/deno-linux-arm64.zip"
+  fi
+  
   local source_path="${install_path}/bin/deno.${archive_format}"
 
   echo "* Downloading and installing deno..."
